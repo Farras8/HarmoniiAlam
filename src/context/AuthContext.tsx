@@ -31,23 +31,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
-    console.log('Stored token on reload:', storedToken); // Debug log
     
     if (storedToken) {
       try {
         const decoded: any = jwtDecode(storedToken);
-        console.log('Decoded token:', decoded); // Debug log
-        console.log('Token expiry:', new Date(decoded.exp * 1000)); // Debug log
-        console.log('Current time:', new Date()); // Debug log
         
         // Cek apakah token sudah kedaluwarsa
         if (decoded.exp * 1000 < Date.now()) {
-          console.log('Token expired, removing...'); // Debug log
           localStorage.removeItem('token');
         } else {
           const userRole = decoded.isAdmin ? 'admin' : decoded.type;
           const user = { id: decoded.adminId || decoded.organizerId || decoded.volunteerId, role: userRole };
-          console.log('Setting user:', user); // Debug log
           setUser(user);
           setToken(storedToken);
           
@@ -58,8 +52,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         console.error("Invalid token:", error);
         localStorage.removeItem('token');
       }
-    } else {
-      console.log('No token found in localStorage'); // Debug log
     }
     setIsLoading(false); // Set loading selesai
   }, []);

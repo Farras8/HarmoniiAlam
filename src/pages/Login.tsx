@@ -29,7 +29,7 @@ const loginUser = async (credentials: {email: string, password: string}) => {
         // Sekarang TypeScript tahu bahwa data.token itu ada dan tipenya string
         return { token: data.token, role: role };
       } catch (error) {
-        console.log(`Login as ${role} failed, trying next...`);
+        // Continue to next role if login fails
       }
     }
     throw new Error('Invalid credentials for all roles');
